@@ -1,0 +1,8 @@
+{
+  "name": "Velveth Lending App",
+  "description": "A comprehensive real-time lending application for Velveth Lending Co. featuring user loan tracking, admin dashboards, GCash/Bank/Cash payment flows, and penalty management.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": []
+}

@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and metadata",
+      "type": "object",
+      "properties": {
+        "fullName": { "type": "string" },
+        "loanIdNumber": { "type": "string", "description": "Used as the primary identifier instead of email for some views" },
+        "email": { "type": "string", "format": "email" },
+        "phoneNumber": { "type": "string" },
+        "address": { "type": "string" },
+        "dateOfBirth": { "type": "string" },
+        "gender": { "type": "string" },
+        "civilStatus": { "type": "string" },
+        "idCardType": { "type": "string" },
+        "nativeLanguage": { "type": "string" },
+        "idImageUrl": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["fullName", "role"]
+    },
+    "Loan": {
+      "title": "Loan",
+      "description": "Loan details for a customer",
+      "type": "object",
+      "properties": {
+        "borrowerId": { "type": "string" },
+        "loanNumber": { "type": "string" },
+        "amount": { "type": "number" },
+        "balance": { "type": "number" },
+        "term": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "completed", "archived"] },
+        "purpose": { "type": "string" },
+        "monthlyIncome": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "penaltyAmount": { "type": "number" }
+      },
+      "required": ["borrowerId", "amount", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment records",
+      "type": "object",
+      "properties": {
+        "loanId": { "type": "string" },
+        "borrowerId": { "type": "string" },
+        "amount": { "type": "number" },
+        "method": { "type": "string", "enum": ["GCash", "Bank Transfer", "Cash Collection"] },
+        "status": { "type": "string", "enum": ["pending", "completed", "rejected"] },
+        "referenceNo": { "type": "string" },
+        "proofImageUrl": { "type": "string" },
+        "paymentDate": { "type": "string", "format": "date-time" },
+        "isPenaltyPayment": { "type": "boolean" },
+        "notes": { "type": "string" }
+      },
+      "required": ["loanId", "borrowerId", "method", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System notifications for users and admins",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Target user ID or 'admin'" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "type": { "type": "string" },
+        "isRead": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "relatedId": { "type": "string" }
+      },
+      "required": ["userId", "message", "isRead"]
+    },
+    "Penalty": {
+      "title": "Penalty",
+      "description": "Penalties for late payments",
+      "type": "object",
+      "properties": {
+        "loanId": { "type": "string" },
+        "borrowerId": { "type": "string" },
+        "amount": { "type": "number" },
+        "reason": { "type": "string" },
+        "status": { "type": "string", "enum": ["unpaid", "paid"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["loanId", "borrowerId", "amount", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User collection" },
+    "/loans/{loanId}": { "schema": "Loan", "description": "Loans collection" },
+    "/payments/{paymentId}": { "schema": "Payment", "description": "Payments collection" },
+    "/notifications/{notificationId}": { "schema": "Notification", "description": "Notifications collection" },
+    "/penalties/{penaltyId}": { "schema": "Penalty", "description": "Penalties collection" }
+  }
+}
